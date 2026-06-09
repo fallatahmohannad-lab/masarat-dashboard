@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Masarat Al-Tanfeeth — Executive Dashboard v10.0</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root{
+    --bg:#F4F6F9;--bg2:#EAF1F4;--card:#FFFFFF;--ink:#0F2027;--teal:#00839E;--accent:#00B4DB;
+    --accent2:#16C79A;--muted:#5A6F78;--line:#E2E9ED;--pos:#1B9E6E;--neg:#D9534F;
+    --shadow:0 2px 10px rgba(15,32,39,.06);--font:'Segoe UI',Tahoma,Arial,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--font);color:var(--ink);min-height:100vh;
+    background:linear-gradient(160deg,var(--bg) 0%,var(--bg2) 100%);background-attachment:fixed;padding:26px 20px 60px}
+  .wrap{max-width:1180px;margin:0 auto}
+  header.top{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:16px;padding-bottom:16px}
+  .brand h1{font-size:22px;font-weight:700}
+  .brand .ar{color:var(--teal);font-size:14px;margin-top:3px}
+  .brand p{color:var(--muted);font-size:12px;margin-top:6px}
+  .topright{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+  .langbtn{cursor:pointer;border:1px solid var(--accent);background:var(--card);color:var(--teal);
+    font-family:var(--font);font-weight:700;font-size:13px;padding:7px 16px;border-radius:20px;transition:.2s}
+  .langbtn:hover{background:var(--accent);color:#fff}
+  .ver{font-size:11px;color:var(--muted);border:1px solid var(--line);background:var(--card);border-radius:20px;padding:5px 12px;white-space:nowrap}
+  .tabs{display:flex;gap:6px;border-bottom:2px solid var(--line);margin:14px 0 22px}
+  .tabs button{cursor:pointer;border:none;background:none;color:var(--muted);font-family:var(--font);
+    font-size:14.5px;font-weight:700;padding:12px 18px;border-bottom:3px solid transparent;margin-bottom:-2px;transition:.2s}
+  .tabs button:hover{color:var(--ink)}
+  .tabs button.active{color:var(--teal);border-bottom-color:var(--accent)}
+  .page{display:none}.page.active{display:block;animation:fade .35s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  .storybeat{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--accent);
+    border-radius:10px;padding:14px 17px;font-size:13px;line-height:1.6;margin-bottom:18px;box-shadow:var(--shadow)}
+  .storybeat b{color:var(--teal)}
+  .insights{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px}
+  .insight{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;box-shadow:var(--shadow);font-size:12.5px;line-height:1.55;color:var(--ink)}
+  .insight a{color:var(--accent);font-weight:700;text-decoration:none;font-size:11.5px}
+  .insight a:hover{text-decoration:underline}
+  .universe{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+  .universe button{cursor:pointer;border:1px solid var(--line);background:var(--card);color:var(--muted);
+    padding:8px 15px;border-radius:9px;font-size:12.5px;font-weight:600;transition:.2s;font-family:var(--font)}
+  .universe button:hover{color:var(--ink);border-color:var(--accent)}
+  .universe button.active{background:linear-gradient(120deg,var(--accent),var(--accent2));color:#fff;border-color:transparent}
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(178px,1fr));gap:14px;margin-bottom:26px}
+  .kpi{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:15px 16px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+  .kpi::before{content:"";position:absolute;left:0;top:0;height:100%;width:3px;background:linear-gradient(var(--accent),var(--accent2))}
+  .kpi .lbl{font-size:10px;letter-spacing:.4px;text-transform:uppercase;color:var(--muted)}
+  .kpi .val{font-size:23px;font-weight:700;margin:6px 0 4px}
+  .kpi .val.pos{color:var(--pos)}
+  .kpi .sub{font-size:11.5px;color:var(--muted);line-height:1.45}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:15px;padding:18px 18px 14px;box-shadow:var(--shadow)}
+  .panel.full{grid-column:1/-1}
+  .panel h3{font-size:14px;font-weight:700}
+  .panel .beat{font-size:11.5px;color:var(--muted);margin:3px 0 14px;font-style:italic}
+  .cwrap{position:relative;height:300px}.cwrap.tall{height:330px}
+  table.pnl{width:100%;border-collapse:collapse;font-size:12px}
+  table.pnl th,table.pnl td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:right}
+  table.pnl th:first-child,table.pnl td:first-child{text-align:left;color:var(--ink)}
+  table.pnl thead th{background:var(--bg2);color:var(--teal);font-weight:700}
+  table.pnl tr.tot td{font-weight:700;color:var(--ink);background:#F7FAFB}
+  table.pnl tr.eb td{font-weight:700;color:var(--pos)}
+  table.pnl td.posnum{color:var(--pos);font-weight:700}
+  table.pnl td.neg{color:var(--neg);font-weight:700}
+  table.pnl tr.ebrow td:first-child{color:var(--ink);font-weight:700}
+  table.pnl td.cost{color:#7d6b55}
+  footer{margin-top:26px;border-top:1px solid var(--line);padding-top:14px;color:var(--muted);font-size:11px;line-height:1.6}
+  footer b{color:var(--ink)}
+  /* RTL */
+  html[dir=rtl] body{direction:rtl}
+  html[dir=rtl] .topright{align-items:flex-start}
+  html[dir=rtl] .kpi::before{left:auto;right:0}
+  html[dir=rtl] .storybeat{border-left:1px solid var(--line);border-right:4px solid var(--accent)}
+  html[dir=rtl] table.pnl th,html[dir=rtl] table.pnl td{text-align:left}
+  html[dir=rtl] table.pnl th:first-child,html[dir=rtl] table.pnl td:first-child{text-align:right}
+  @media(max-width:760px){.grid,.insights{grid-template-columns:1fr}.brand h1{font-size:18px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <h1 data-i18n="title">Masarat Al-Tanfeeth — Executive Dashboard</h1>
+      <div class="ar" data-i18n="cycle">The Pre-Award Planning to Post-Award Payment Cycle</div>
+      <p data-i18n="tagline">Two-Phase Multi-Sided GovTech &amp; FinTech Marketplace · Vision 2030 · v10.0</p>
+    </div>
+    <div class="topright">
+      <button class="langbtn" id="langBtn">العربية</button>
+      <div class="ver">MISE 698 Capstone · v10.0</div>
+    </div>
+  </header>
+
+  <nav class="tabs" id="tabs">
+    <button data-p="p22" class="active" data-i18n="tab22">Market Dynamics</button>
+    <button data-p="p63" data-i18n="tab63">Financial Feasibility</button>
+  </nav>
+
+  <!-- ===== §2.2 ===== -->
+  <section class="page active" id="p22">
+    <div class="storybeat" data-i18n="beat22"></div>
+    <div class="insights">
+      <div class="insight"><span data-i18n="ins1"></span> <a href="https://etimad.sa/" target="_blank" rel="noopener" data-i18n="src">Source ↗</a></div>
+      <div class="insight"><span data-i18n="ins2"></span> <a href="https://www.stats.gov.sa/" target="_blank" rel="noopener" data-i18n="src">Source ↗</a></div>
+    </div>
+    <div class="universe" id="universe">
+      <button data-u="b2g" class="active" data-i18n="uB2g">Phase 1 — B2G Universe</button>
+      <button data-u="b2b" data-i18n="uB2b">Phase 2 — B2B Universe</button>
+      <button data-u="combined" data-i18n="uCmb">Combined Trajectory</button>
+    </div>
+    <div class="kpis" id="kpis22"></div>
+    <div class="grid">
+      <div class="panel full"><h3 data-i18n="c_trend_t"></h3><div class="beat" data-i18n="c_trend_b"></div><div class="cwrap tall"><canvas id="trendChart"></canvas></div></div>
+      <div class="panel"><h3 data-i18n="c_pipe_t"></h3><div class="beat" data-i18n="c_pipe_b"></div><div class="cwrap"><canvas id="pipelineChart"></canvas></div></div>
+      <div class="panel"><h3 data-i18n="c_ent_t"></h3><div class="beat" data-i18n="c_ent_b"></div><div class="cwrap"><canvas id="entityChart"></canvas></div></div>
+      <div class="panel"><h3 data-i18n="c_conc_t"></h3><div class="beat" data-i18n="c_conc_b"></div><div class="cwrap"><canvas id="concChart"></canvas></div></div>
+      <div class="panel"><h3 data-i18n="c_leak_t"></h3><div class="beat" data-i18n="c_leak_b"></div><div class="cwrap"><canvas id="leakChart"></canvas></div></div>
+    </div>
+  </section>
+
+  <!-- ===== §6.3 ===== -->
+  <section class="page" id="p63">
+    <div class="storybeat" data-i18n="beat63"></div>
+    <div class="kpis" id="kpis63"></div>
+    <div class="grid">
+      <div class="panel full"><h3 data-i18n="c_pnl_t"></h3><div class="beat" data-i18n="c_pnl_b"></div><div class="cwrap tall"><canvas id="pnlChart"></canvas></div></div>
+      <div class="panel full"><h3 data-i18n="t_pnl_t"></h3><div class="beat" data-i18n="t_pnl_b"></div><div id="pnlTable"></div></div>
+      <div class="panel"><h3 data-i18n="c_opex_t"></h3><div class="beat" data-i18n="c_opex_b"></div><div class="cwrap"><canvas id="opexChart"></canvas></div></div>
+      <div class="panel"><h3 data-i18n="c_prof_t"></h3><div class="beat" data-i18n="c_prof_b"></div><div class="cwrap"><canvas id="profChart"></canvas></div></div>
+      <div class="panel"><h3 data-i18n="c_rev_t"></h3><div class="beat" data-i18n="c_rev_b"></div><div class="cwrap"><canvas id="revChart"></canvas></div></div>
+      <div class="panel"><h3 data-i18n="c_mvp_t"></h3><div class="beat" data-i18n="c_mvp_b"></div><div class="cwrap"><canvas id="mvpChart"></canvas></div></div>
+    </div>
+  </section>
+
+  <footer><div data-i18n="foot3"></div><div style="margin-top:6px" data-i18n="foot1"></div><div style="margin-top:6px" data-i18n="foot2"></div></footer>
+</div>
+
+<script>
+/* ===================== i18n DICTIONARY ===================== */
+const L={
+ en:{
+  title:"Masarat Al-Tanfeeth — Executive Dashboard",
+  cycle:"The Pre-Award Planning to Post-Award Payment Cycle",
+  tagline:"Two-Phase Multi-Sided GovTech & FinTech Marketplace · Vision 2030 · v10.0",
+  lang:"العربية", tab22:"Market Dynamics", tab63:"Financial Feasibility",
+  beat22:"<b>Bottom line for the boardroom —</b> this is not a SAR 429B construction play. It is a SAR 1.65T multi-sided market whose value is concentrated in a handful of large tenders, locked in by local-content regulation, and trapped behind a 65-day payment lag. Masarat is built to release exactly that trapped value.",
+  beat63:"<b>For the CFO —</b> the dynamic Approval Matrix freezes every change order until the technical study clears it, and the Movement Reversal engine writes down any returned or rejected value the instant it happens. Together they eliminate over-factoring risk and convert a 65-day payment lag into financeable, low-risk working capital — at a Year-3 EBITDA margin of +28.3% on a deliberately lean SAR 14.2M cost base.",
+  ins1:"Etimad has processed over <b>SAR 2 Trillion</b> in government contracts since launch — the national rail Masarat governs.",
+  ins2:"GASTAT anchors the construction sector at <b>SAR 429.3B</b> — SMEs SAR 248.9B, large enterprises SAR 180.4B — the empirical basis for our bimodal design.",
+  src:"Source ↗",
+  leg:"● Green = positive · <span style='color:#D9534F'>Red = negative</span> (shown in parentheses). COGS and OpEx are costs deducted from revenue, not negative results.",
+  uB2g:"Phase 1 — B2G Universe", uB2b:"Phase 2 — B2B Universe", uCmb:"Combined Trajectory",
+  c_pipe_t:"SAR 460B B2G Pipeline — by Category", c_pipe_b:"Distribution → bars: construction is the beachhead, not the ceiling (60% non-construction).",
+  c_ent_t:"Bimodal Entity-Size Economy", c_ent_b:"Composition: two comparable economies, opposite maturities → bimodality is architectural.",
+  c_conc_t:"Value Concentration — 2024 Etimad Tenders", c_conc_b:"1.6% of tenders by count carry 69.5% of value — a top-down enterprise sales motion.",
+  c_leak_t:"Value-Leakage Composition", c_leak_b:"~69% of leakage in change orders + payment delay — Masarat's primary value pools.",
+  c_trend_t:"Tender Acceleration & 2025 Predictive Horizon", c_trend_b:"The Etimad pipeline scales natively in SAR Billions, crossing the frozen SAR 460B SAM barrier by 2025 (2024–2025 = forecast).",
+  trendValLbl:"Pipeline Value (SAR B)", trendCntLbl:"Tender Count", trendAxisL:"SAR Billions (مليار ريال سعودي)", trendAxisR:"Tender Count",
+  foot3:"<b>Tender trend:</b> The Tender Trend chart tracks the macro expansion of the Etimad pipeline, demonstrating how tracked transaction volume natively scales up to cross our frozen SAR 460 Billion SAM barrier by 2025. This total addressable pipeline fuels Masarat's multi-sided commercial model, driving our targeted Year-3 EBITDA of SAR 19.8M (on SAR 70.0M revenue) against our compressed SAR 14.2M OpEx base.",
+  c_pnl_t:"3-Year P&L Trajectory — Revenue, OpEx & EBITDA", c_pnl_b:"Revenue (line) outpaces a flat OpEx curve; EBITDA turns positive in Year 2 and reaches +28.3% by Year 3.",
+  t_pnl_t:"Exact Multi-Year P&L — Line Items (SAR M)", t_pnl_b:"SaaS subscriptions + FinTech factoring commissions, against five disciplined OpEx lines.",
+  c_opex_t:"Year-3 Cost Structure — SAR 14.2M", c_opex_b:"Five OpEx lines; Personnel & Core AI Engineering dominate, compounding into reusable IP.",
+  c_prof_t:"Multi-Year OpEx Profile (stacked)", c_prof_b:"OpEx scales only behind validated revenue — 1.40M → 4.60M → 14.20M.",
+  c_rev_t:"Revenue Streams (stacked) — SaaS vs FinTech", c_rev_b:"SaaS subscriptions plus FinTech marketplace factoring commissions.",
+  c_mvp_t:"Ultra-Lean MVP Inception — SAR 450K", c_mvp_b:"66.7% of capital builds permanent backend IP before scale capital is deployed.",
+  foot1:"<b>Sources & caveats:</b> GASTAT Comprehensive Economic Survey 2023 (SAR 429.3B; SME 248.9B / Large 180.4B); Etimad > SAR 2T processed contracts; LCGPA 2024 (SAR 336.3B tenders, 94.1% local-content intensity). SAR 460B+ category splits are calibrated analyst allocations.",
+  foot2:"<b>EBITDA bridge:</b> Year-3 EBITDA +28.3% (SAR 19.8M) = Revenue 70.0M − Cost of Revenue 36.0M − OpEx 14.2M. Cost of Revenue covers financier factoring payouts, cloud/Claude-API consumption and onboarding. Unit economics are analyst-derived for illustration.",
+  // KPI sets
+  kpi22:{
+   b2g:[["Serviceable Market (SAM)","SAR 460B","Sector-agnostic Etimad pipeline / yr"],["Beachhead (SOM)","SAR 185B","Construction landing pad — 40% of SAM"],["Trapped Working Capital","SAR 29.4B","17.8% of the SAR 165.2B opex base, locked 65 days"],["LCGPA Intensity","94.1%","SAR 316.4B of SAR 336.3B carry local-content rules"],["Public-Competition Share","74.1%","SAR 713.9M of SAR 963.1M (331-tender sample)"],["Construction Sector TAM","SAR 429.3B","GASTAT 2023 operating revenue"]],
+   b2b:[["Addressable Invoice Volume","SAR 1.2T","Private merchant economy under ZATCA Ph 2/3"],["Ingestion Point","Enterprise RFQ","Symmetric to the B2G Etimad RFP"],["Architecture Reuse","100%","Same core, Zero-Trust, reversal logic — re-pointed"],["Technical Debt","≈ 0","Endpoints shift to ZATCA via Universal ERP connectors"],["Over-Factoring Risk","Eliminated","Movement Reversal reprices on real-time returns",1],["Origination Take-Rate","0.5–1.5%","High-margin FinTech commission on receivables"]],
+   combined:[["Total Addressable (TAM)","SAR 1.65T","3.8× the construction-only TAM"],["Serviceable (B2G SAM)","SAR 460B","Phase 1 pipeline / yr"],["B2B Horizon","SAR 1.2T","Phase 2 invoice economy"],["Beachhead (SOM)","SAR 185B","Construction landing pad"],["Trapped Capital","SAR 29.4B","Financeable working-capital pool"],["LCGPA Intensity","94.1%","Regulatory stickiness moat"]]
+  },
+  kpi63:[["MVP Inception Cap","SAR 450K","66.7% → permanent IP (6 months)"],["Break-Even","Year 2","on a SAR 4.60M OpEx base"],["Year-3 OpEx","SAR 14.2M","consolidated · near-zero Phase-2 tech debt"],["Year-3 EBITDA Margin","+28.3%","SAR 19.8M on SAR 70.0M revenue",1],["Return on Investment (3-Yr)","≈ 3.2×","SAR 19.3M cumulative EBITDA on a SAR 6.0M raise",1],["Payback Period","≈ 28 months","investment recovered early in Year 3",1],["3-Yr Cumulative Revenue","SAR 100.8M","6.8 → 24.0 → 70.0M"],["LTV / CAC","≈ 6.1×","GM 49% · NRR 120% · Rule-of-40 ≫ 40",1]],
+  // chart labels
+  pipe:["Construction & Infra","Operations & Maint.","Medical & Pharma","Goods & Souq","IT & Digital","Professional Svc"],
+  ent:["SMEs → Smart UI (Standalone)","Large Corp → Zero-Touch Gateway"],
+  conc:["High-value cohort (1,393 tenders)","Remaining tenders"], concAxis:"2024 Tender Value (SAR 336.3B)",
+  leak:["Change orders 38%","Payment-delay carry 31%","Reconciliation 18%","Local-content penalties 9%","Other 4%"],
+  years:["Year 1","Year 2","Year 3"],
+  dsRev:"Revenue (SAR M)", dsOpex:"OpEx (SAR M)", dsEbit:"EBITDA (SAR M)",
+  opexCat:["Personnel & Core AI Engineering","Enterprise Marketing & User Acquisition","Secure API Gateway & Open Banking","Saudi GovCloud Infrastructure & Licenses","Cybersecurity, Compliance & Legal"],
+  revStream:["SaaS Platform Subscriptions","FinTech Marketplace Fees (Factoring)"],
+  mvp:["Core Engineering","Infrastructure","Cybersecurity","Compliance"],
+  tbl:{rev:"Revenue",saas:"SaaS Platform Subscriptions",fin:"FinTech Marketplace Fees",totrev:"Total Revenue",cogs:"Cost of Revenue (COGS)",opex:"Operating Expenditure",totopex:"Total OpEx",ebit:"EBITDA",margin:"EBITDA Margin"}
+ },
+ ar:{
+  title:"منصة مسارات التنفيذ — لوحة القيادة التنفيذية",
+  cycle:"دورة التخطيط ما قبل الترسية إلى الدفع ما بعد الترسية",
+  tagline:"سوق رقمي حكومي ومالي متعدد الأطراف على مرحلتين · رؤية 2030 · الإصدار 10.0",
+  lang:"English", tab22:"ديناميكيات السوق", tab63:"الجدوى المالية",
+  beat22:"<b>الخلاصة لمجلس الإدارة —</b> هذه ليست فرصة إنشاءات بقيمة 429 مليار ريال، بل سوقٌ متعدد الأطراف بقيمة 1.65 تريليون ريال، قيمته مركّزة في عددٍ محدود من المنافسات الكبرى، ومحميّة باشتراطات المحتوى المحلي، ومحتجزة خلف فجوة سدادٍ تمتد 65 يوماً. صُمّمت مسارات لتحرير هذه القيمة المحتجزة بالتحديد.",
+  beat63:"<b>إلى المدير المالي —</b> مصفوفة الاعتماد الديناميكية تُجمّد أي أمر تغييرٍ حتى تُجيزه الدراسة الفنية، ومحرّك عكس الحركة يُخفّض أي قيمةٍ مرتجعة أو مرفوضة لحظة حدوثها. ومعاً يُلغيان مخاطر التمويل الزائد ويحوّلان فجوة سدادٍ من 65 يوماً إلى رأس مالٍ عامل منخفض المخاطر وقابل للتمويل — بهامش EBITDA يبلغ +28.3% في السنة الثالثة على قاعدة تكلفةٍ رشيقة قدرها 14.2 مليون ريال.",
+  ins1:"عالجت منصة اعتماد أكثر من <b>2 تريليون ريال</b> من العقود الحكومية منذ إطلاقها — وهي القناة الوطنية التي تحوكمها مسارات.",
+  ins2:"تُثبّت هيئة الإحصاء حجم قطاع الإنشاءات عند <b>429.3 مليار ريال</b> — المنشآت الصغيرة والمتوسطة 248.9 مليار والكبرى 180.4 مليار — وهو الأساس التجريبي لتصميمنا الثنائي.",
+  src:"المصدر ↗",
+  leg:"● أخضر = موجب · <span style='color:#D9534F'>أحمر = سالب</span> (بين قوسين). تكلفة الإيراد والمصروفات بنود تُخصم من الإيراد، وليست نتائج سالبة.",
+  uB2g:"المرحلة 1 — القطاع الحكومي B2G", uB2b:"المرحلة 2 — القطاع الخاص B2B", uCmb:"المسار المجمّع",
+  c_pipe_t:"خط مشتريات B2G بقيمة 460 مليار ريال — حسب الفئة", c_pipe_b:"توزيع → أعمدة: الإنشاءات نقطة انطلاق لا سقف (60% خارج الإنشاءات).",
+  c_ent_t:"اقتصاد ثنائي حسب حجم المنشأة", c_ent_b:"تركيبة: اقتصادان متقاربان بنضجٍ متعاكس → الثنائية قرار معماري.",
+  c_conc_t:"تركّز القيمة — منافسات اعتماد 2024", c_conc_b:"1.6% من المنافسات عدداً تحمل 69.5% من القيمة — بيعٌ مؤسسي من الأعلى للأسفل.",
+  c_leak_t:"تركيبة تسرّب القيمة", c_leak_b:"نحو 69% من التسرّب في أوامر التغيير وتأخّر السداد — مجمّعات القيمة الأساسية لمسارات.",
+  c_trend_t:"تسارع المنافسات وأفق التنبؤ 2025", c_trend_b:"خط مشتريات اعتماد يتوسّع بالمليار، ويتقاطع مع حاجز السوق المعتمد 460 مليار ريال بحلول 2025 (2024–2025 تنبؤ).",
+  trendValLbl:"قيمة الخط (مليار ريال)", trendCntLbl:"عدد المنافسات", trendAxisL:"مليار ريال سعودي", trendAxisR:"عدد المنافسات",
+  foot3:"<b>تسارع المشتريات:</b> شارت تسارع المشتريات يرصد التوسّع الكلي لعمليات منصة اعتماد حتى يتقاطع مع حجم السوق الفعلي المعتمد في التقرير وهو 460 مليار ريال بحلول عام 2025. هذا الخط الضخم هو النواة التي تغذّي نموذج مسارات التجاري لتوليد EBITDA السنة الثالثة البالغ 19.8 مليون ريال (على إيراد 70.0 مليون) وتغطية مصروفاتنا المحوكمة البالغة 14.2 مليون ريال دون أي تعارض رقمي.",
+  c_pnl_t:"مسار الأرباح والخسائر 3 سنوات — الإيراد والمصروفات وEBITDA", c_pnl_b:"الإيراد (خط) يتفوّق على منحنى مصروفات مسطّح؛ يتحوّل EBITDA إيجابياً في السنة الثانية ويبلغ +28.3% في الثالثة.",
+  t_pnl_t:"الأرباح والخسائر التفصيلية متعددة السنوات (مليون ريال)", t_pnl_b:"اشتراكات SaaS + عمولات التخصيم المالية، مقابل خمسة بنود مصروفات منضبطة.",
+  c_opex_t:"هيكل تكلفة السنة الثالثة — 14.2 مليون ريال", c_opex_b:"خمسة بنود مصروفات؛ الرواتب وهندسة الذكاء الاصطناعي تهيمن وتتراكم كملكية فكرية قابلة لإعادة الاستخدام.",
+  c_prof_t:"ملف المصروفات متعدد السنوات (تراكمي)", c_prof_b:"المصروفات تتوسّع فقط خلف إيرادٍ مُتحقّق — 1.40 ← 4.60 ← 14.20 مليون.",
+  c_rev_t:"مصادر الإيراد (تراكمي) — SaaS مقابل التمويل", c_rev_b:"اشتراكات SaaS إضافةً إلى عمولات تخصيم سوق التمويل.",
+  c_mvp_t:"تأسيس MVP فائق الرشاقة — 450 ألف ريال", c_mvp_b:"66.7% من رأس المال تبني ملكية فكرية خلفية دائمة قبل ضخّ رأس مال التوسّع.",
+  foot1:"<b>المصادر والتحفظات:</b> مسح هيئة الإحصاء الاقتصادي الشامل 2023 (429.3 مليار؛ صغيرة 248.9 / كبيرة 180.4)؛ اعتماد > 2 تريليون عقد معالَج؛ هيئة المحتوى المحلي 2024 (336.3 مليار منافسة، كثافة محتوى محلي 94.1%). تقسيمات الـ 460 مليار تقديرات تحليلية معايَرة.",
+  foot2:"<b>جسر EBITDA:</b> السنة الثالثة +28.3% (19.8 مليون) = إيراد 70.0 − تكلفة إيراد 36.0 − مصروفات 14.2 مليون. تكلفة الإيراد تشمل مدفوعات التخصيم للممولين واستهلاك السحابة/واجهة Claude والتهيئة. وحدات الاقتصاد تقديرية للتوضيح.",
+  kpi22:{
+   b2g:[["السوق القابل للخدمة (SAM)","460 مليار ريال","خط مشتريات اعتماد متعدد القطاعات سنوياً"],["رأس الجسر (SOM)","185 مليار ريال","قطاع الإنشاءات كنقطة انطلاق — 40% من SAM"],["رأس المال العامل المحتجز","29.4 مليار ريال","17.8% من قاعدة المصروفات 165.2 مليار، محتجزة 65 يوماً"],["كثافة المحتوى المحلي","94.1%","316.4 مليار من 336.3 مليار تخضع لاشتراطات المحتوى المحلي"],["حصة المنافسة العامة","74.1%","713.9 مليون من 963.1 مليون (عينة 331 منافسة)"],["حجم قطاع الإنشاءات (TAM)","429.3 مليار ريال","إيراد التشغيل وفق هيئة الإحصاء 2023"]],
+   b2b:[["حجم الفواتير القابل للاستهداف","1.2 تريليون ريال","اقتصاد التجارة الخاص تحت زاتكا (المرحلة 2/3)"],["نقطة الإدخال","طلب عرض أسعار مؤسسي","مماثل لكراسة اعتماد الحكومية"],["إعادة استخدام المعمارية","100%","النواة ذاتها، الثقة الصفرية، منطق العكس — مع إعادة توجيه"],["الدين التقني","≈ صفر","تتحوّل النقاط الطرفية إلى زاتكا عبر موصّلات ERP القياسية"],["مخاطر التمويل الزائد","مُلغاة","عكس الحركة يعيد التسعير على المرتجعات الفورية",1],["عمولة التأسيس","0.5–1.5%","عمولة مالية عالية الهامش على المستحقات"]],
+   combined:[["إجمالي السوق (TAM)","1.65 تريليون ريال","3.8 أضعاف سوق الإنشاءات وحده"],["القابل للخدمة (B2G SAM)","460 مليار ريال","خط المرحلة الأولى سنوياً"],["أفق B2B","1.2 تريليون ريال","اقتصاد فواتير المرحلة الثانية"],["رأس الجسر (SOM)","185 مليار ريال","قطاع الإنشاءات كنقطة انطلاق"],["رأس المال المحتجز","29.4 مليار ريال","مجمّع رأس المال العامل القابل للتمويل"],["كثافة المحتوى المحلي","94.1%","خندق الالتصاق التنظيمي"]]
+  },
+  kpi63:[["سقف رأس مال التأسيس","450 ألف ريال","66.7% لملكية فكرية دائمة (6 أشهر)"],["نقطة التعادل","السنة الثانية","على قاعدة مصروفات 4.60 مليون ريال"],["مصروفات السنة الثالثة","14.2 مليون ريال","موحّدة · دين تقني شبه معدوم للمرحلة الثانية"],["هامش EBITDA السنة الثالثة","+28.3%","19.8 مليون على إيراد 70.0 مليون ريال",1],["العائد على الاستثمار (3 سنوات)","≈ 3.2×","19.3 مليون EBITDA تراكمي على جولة 6.0 مليون",1],["فترة الاسترداد","≈ 28 شهراً","استرداد الاستثمار مبكراً في السنة الثالثة",1],["الإيراد التراكمي 3 سنوات","100.8 مليون ريال","6.8 ← 24.0 ← 70.0 مليون"],["LTV / CAC","≈ 6.1×","هامش إجمالي 49% · احتفاظ 120% · قاعدة الأربعين ≫ 40",1]],
+  pipe:["الإنشاءات والبنية التحتية","التشغيل والصيانة","الطبي والدوائي","السلع وسوق اعتماد","تقنية المعلومات","الخدمات المهنية"],
+  ent:["الصغيرة والمتوسطة → واجهة ذكية","الكبرى → بوابة بدون لمس"],
+  conc:["الشريحة عالية القيمة (1,393 منافسة)","بقية المنافسات"], concAxis:"قيمة منافسات 2024 (336.3 مليار ريال)",
+  leak:["أوامر التغيير 38%","تكلفة تأخّر السداد 31%","التسويات 18%","غرامات المحتوى المحلي 9%","أخرى 4%"],
+  years:["السنة 1","السنة 2","السنة 3"],
+  dsRev:"الإيراد (مليون ريال)", dsOpex:"المصروفات (مليون ريال)", dsEbit:"EBITDA (مليون ريال)",
+  opexCat:["الرواتب وهندسة الذكاء الاصطناعي","التسويق المؤسسي واستقطاب المستخدمين","بوابة API الآمنة والخدمات المصرفية المفتوحة","بنية GovCloud السعودية والتراخيص","الأمن السيبراني والامتثال والدفاع القانوني"],
+  revStream:["اشتراكات منصة SaaS","رسوم سوق التمويل (تخصيم)"],
+  mvp:["الهندسة الأساسية","البنية التحتية","الأمن السيبراني","الامتثال"],
+  tbl:{rev:"الإيراد",saas:"اشتراكات منصة SaaS",fin:"رسوم سوق التمويل",totrev:"إجمالي الإيراد",cogs:"تكلفة الإيراد (COGS)",opex:"المصروفات التشغيلية",totopex:"إجمالي المصروفات",ebit:"EBITDA",margin:"هامش EBITDA"}
+ }
+};
+
+/* ===================== DATA MODEL (language-independent) ===================== */
+const D={
+ pipe:[185,80,70,55,45,25], ent:[248.9,180.4], conc:[233.7,102.6], leak:[38,31,18,9,4],
+ trendYears:["2020","2021","2022","2023","2024","2025"], trendVal:[243.1,150.1,162.6,407.4,435.0,460.0], trendCnt:[96,59,53,123,165,null],
+ rev:[6.8,24.0,70.0], opexTot:[1.40,4.60,14.20], ebit:[-1.0,0.5,19.8],
+ opexCat:[[0.85,2.40,6.00],[0.15,1.00,4.00],[0.15,0.55,1.80],[0.15,0.40,1.40],[0.10,0.25,1.00]], // by category × year
+ opexY3:[6.00,4.00,1.80,1.40,1.00],
+ revStream:[[6.0,17.0,44.0],[0.8,7.0,26.0]], // SaaS, FinTech × year
+ cogs:[6.4,18.9,36.0], mvp:[300,70,50,30],
+ saas:[6.0,17.0,44.0], fin:[0.8,7.0,26.0]
+};
+const PAL=['#00B4DB','#16C79A','#1f8fb0','#2aa39a','#3f7e8c','#7d909a'];
+const GRID='#E8EEF1';
+Chart.defaults.color='#5A6F78'; Chart.defaults.font.family="'Segoe UI',Tahoma,Arial,sans-serif"; Chart.defaults.font.size=12;
+
+let lang='en', activeUniverse='b2g', activePage='p22';
+const builtLang={p22:null,p63:null};
+const store={p22:[],p63:[]};
+
+/* ===================== RENDER TEXT ===================== */
+function applyText(){
+  const t=L[lang];
+  document.documentElement.lang=lang;
+  document.documentElement.dir = lang==='ar'?'rtl':'ltr';
+  document.getElementById('langBtn').textContent=t.lang;
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const k=el.getAttribute('data-i18n'); if(t[k]!==undefined) el.innerHTML=t[k];
+  });
+}
+function kpiHTML(arr){return arr.map(k=>`<div class="kpi"><div class="lbl">${k[0]}</div>
+  <div class="val ${k[3]?'pos':''}">${k[1]}</div><div class="sub">${k[2]}</div></div>`).join('');}
+function renderKPIs(){
+  document.getElementById('kpis22').innerHTML=kpiHTML(L[lang].kpi22[activeUniverse]);
+  document.getElementById('kpis63').innerHTML=kpiHTML(L[lang].kpi63);
+}
+function renderTable(){
+  const t=L[lang].tbl, y=L[lang].years;
+  const row=(label,vals,cls='')=>`<tr class="${cls}"><td>${label}</td>${vals.map(v=>`<td>${v.toFixed(1)}</td>`).join('')}</tr>`;
+  const marg=D.ebit.map((e,i)=>(e/D.rev[i]*100));
+  let html=`<table class="pnl"><thead><tr><th>${t.rev}</th><th>${y[0]}</th><th>${y[1]}</th><th>${y[2]}</th></tr></thead><tbody>`;
+  html+=row(t.saas,D.saas)+row(t.fin,D.fin)+row(t.totrev,D.rev,'tot');
+  html+=row(t.cogs,D.cogs);
+  const rowP=(label,vals,cls='')=>`<tr class="${cls}"><td>${label}</td>${vals.map(v=>`<td class="cost">(${v.toFixed(1)})</td>`).join('')}</tr>`;
+  L[lang].opexCat.forEach((c,i)=>{html+=rowP(c,D.opexCat[i]);});
+  html+=rowP(t.totopex,D.opexTot,'tot');
+  const sgn=v=>v<0?'neg':'posnum';
+  html+=`<tr class="ebrow"><td>${t.ebit}</td>${D.ebit.map(v=>`<td class="${sgn(v)}">${v<0?'('+Math.abs(v).toFixed(1)+')':v.toFixed(1)}</td>`).join('')}</tr>`;
+  html+=`<tr class="ebrow"><td>${t.margin}</td>${marg.map(m=>`<td class="${sgn(m)}">${m<0?'('+Math.abs(m).toFixed(1)+'%)':m.toFixed(1)+'%'}</td>`).join('')}</tr>`;
+  html+=`</tbody></table>`;
+  html+=`<div style="font-size:11px;color:var(--muted);margin-top:8px">${L[lang].leg}</div>`;
+  document.getElementById('pnlTable').innerHTML=html;
+}
+
+/* ===================== CHARTS ===================== */
+function destroy(p){store[p].forEach(c=>c.destroy());store[p]=[];}
+function tip(unit){return {callbacks:{label:c=>` ${c.dataset.label?c.dataset.label+': ':''}${(c.parsed.y!==undefined?c.parsed.y:c.parsed.x??c.parsed)}${unit}`}};}
+
+function buildP22(){
+  destroy('p22'); const t=L[lang]; const ar=lang==='ar';
+  store.p22.push(new Chart(trendChart,{
+    data:{labels:D.trendYears,datasets:[
+      {type:'bar',label:t.trendCntLbl,data:D.trendCnt,backgroundColor:'rgba(125,144,154,.40)',borderColor:'#7d909a',borderWidth:1,borderRadius:5,yAxisID:'y1',order:3},
+      {type:'line',label:t.trendValLbl,data:D.trendVal,borderColor:'#00B4DB',backgroundColor:'rgba(0,180,219,.10)',borderWidth:3,fill:true,tension:.25,yAxisID:'y',order:1,
+        pointBackgroundColor:D.trendVal.map((_,i)=>i>=4?'#16C79A':'#00B4DB'),pointRadius:5,
+        segment:{borderDash:ctx=>ctx.p1DataIndex>=4?[6,4]:undefined}}]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{position:'top'},tooltip:{callbacks:{label:c=>{
+        if(c.parsed.y==null)return'';
+        if(c.dataset.yAxisID==='y')return ar?` ${c.dataset.label}: ${c.parsed.y} مليار ريال`:` ${c.dataset.label}: SAR ${c.parsed.y}B`;
+        return ` ${c.dataset.label}: ${c.parsed.y}`;
+      }}}},
+      scales:{
+        y:{position:'left',grid:{color:GRID},title:{display:true,text:t.trendAxisL},ticks:{callback:v=>ar?v:v+'B'}},
+        y1:{position:'right',grid:{display:false},title:{display:true,text:t.trendAxisR},ticks:{precision:0}},
+        x:{grid:{display:false}}}}}));
+  store.p22.push(new Chart(pipelineChart,{type:'bar',
+    data:{labels:t.pipe,datasets:[{data:D.pipe,backgroundColor:PAL,borderRadius:6}]},
+    options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.parsed.x} (${(c.parsed.x/460*100).toFixed(0)}%)`}}},
+      scales:{x:{grid:{color:GRID}},y:{grid:{display:false}}}}}));
+  store.p22.push(new Chart(entityChart,{type:'doughnut',
+    data:{labels:t.ent,datasets:[{data:D.ent,backgroundColor:['#00B4DB','#16C79A'],borderColor:'#fff',borderWidth:3}]},
+    options:{responsive:true,maintainAspectRatio:false,cutout:'62%',
+      plugins:{legend:{position:'bottom',labels:{padding:12,boxWidth:12}},tooltip:{callbacks:{label:c=>` ${c.parsed} (${(c.parsed/429.3*100).toFixed(0)}%)`}}}}}));
+  store.p22.push(new Chart(concChart,{type:'bar',
+    data:{labels:[t.concAxis],datasets:[
+      {label:t.conc[0],data:[D.conc[0]],backgroundColor:'#00B4DB',borderRadius:5},
+      {label:t.conc[1],data:[D.conc[1]],backgroundColor:'#cdd9df',borderRadius:5}]},
+    options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{position:'bottom',labels:{boxWidth:12}},tooltip:{callbacks:{label:c=>` ${c.parsed.x} (${(c.parsed.x/336.3*100).toFixed(1)}%)`}}},
+      scales:{x:{stacked:true,grid:{color:GRID}},y:{stacked:true,grid:{display:false}}}}}));
+  store.p22.push(new Chart(leakChart,{type:'doughnut',
+    data:{labels:t.leak,datasets:[{data:D.leak,backgroundColor:['#00B4DB','#16C79A','#1f8fb0','#3f7e8c','#aebcc4'],borderColor:'#fff',borderWidth:3}]},
+    options:{responsive:true,maintainAspectRatio:false,cutout:'58%',
+      plugins:{legend:{position:'bottom',labels:{padding:7,boxWidth:11,font:{size:10}}},tooltip:{callbacks:{label:c=>` ${c.parsed}%`}}}}}));
+}
+
+function buildP63(){
+  destroy('p63'); const t=L[lang];
+  store.p63.push(new Chart(pnlChart,{
+    data:{labels:t.years,datasets:[
+      {type:'bar',label:t.dsOpex,data:D.opexTot,backgroundColor:'rgba(125,144,154,.55)',borderColor:'#7d909a',borderWidth:1,borderRadius:6,order:3},
+      {type:'line',label:t.dsRev,data:D.rev,borderColor:'#00B4DB',backgroundColor:'rgba(0,180,219,.12)',borderWidth:3,fill:true,tension:.3,pointBackgroundColor:'#00B4DB',pointRadius:5,order:1},
+      {type:'line',label:t.dsEbit,data:D.ebit,borderColor:'#16C79A',borderWidth:3,borderDash:[6,4],tension:.3,pointBackgroundColor:'#16C79A',pointRadius:5,order:2}]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{position:'top'},tooltip:{callbacks:{label:c=>` ${c.dataset.label}: SAR ${c.parsed.y}M`}}},
+      scales:{y:{grid:{color:GRID},ticks:{callback:v=>v+'M'}},x:{grid:{display:false}}}}}));
+  store.p63.push(new Chart(opexChart,{type:'bar',
+    data:{labels:t.opexCat,datasets:[{data:D.opexY3,backgroundColor:PAL,borderRadius:6}]},
+    options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` SAR ${c.parsed.x}M (${(c.parsed.x/14.2*100).toFixed(0)}%)`}}},
+      scales:{x:{grid:{color:GRID},ticks:{callback:v=>v+'M'}},y:{grid:{display:false}}}}}));
+  store.p63.push(new Chart(profChart,{type:'bar',
+    data:{labels:t.years,datasets:t.opexCat.map((c,i)=>({label:c,data:D.opexCat[i],backgroundColor:PAL[i],borderRadius:3}))},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{position:'bottom',labels:{boxWidth:11,font:{size:9.5}}},tooltip:{callbacks:{label:c=>` ${c.dataset.label}: SAR ${c.parsed.y}M`}}},
+      scales:{x:{stacked:true,grid:{display:false}},y:{stacked:true,grid:{color:GRID},ticks:{callback:v=>v+'M'}}}}}));
+  store.p63.push(new Chart(revChart,{type:'bar',
+    data:{labels:t.years,datasets:t.revStream.map((c,i)=>({label:c,data:D.revStream[i],backgroundColor:['#00B4DB','#16C79A'][i],borderRadius:4}))},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{position:'bottom',labels:{boxWidth:11,font:{size:10}}},tooltip:{callbacks:{label:c=>` ${c.dataset.label}: SAR ${c.parsed.y}M`}}},
+      scales:{x:{stacked:true,grid:{display:false}},y:{stacked:true,grid:{color:GRID},ticks:{callback:v=>v+'M'}}}}}));
+  store.p63.push(new Chart(mvpChart,{type:'bar',
+    data:{labels:t.mvp,datasets:[{data:D.mvp,backgroundColor:PAL,borderRadius:6}]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` SAR ${c.parsed.y}K (${(c.parsed.y/450*100).toFixed(1)}%)`}}},
+      scales:{y:{grid:{color:GRID},ticks:{callback:v=>v+'K'}},x:{grid:{display:false}}}}}));
+}
+const buildFns={p22:buildP22,p63:buildP63};
+function ensurePage(p){
+  if(builtLang[p]!==lang){buildFns[p](); builtLang[p]=lang;}
+  else setTimeout(()=>store[p].forEach(c=>c.resize()),40);
+}
+
+/* ===================== EVENTS ===================== */
+document.getElementById('langBtn').addEventListener('click',()=>{
+  lang = lang==='en'?'ar':'en';
+  applyText(); renderKPIs(); renderTable();
+  builtLang.p22=null; builtLang.p63=null;
+  ensurePage(activePage);
+});
+document.getElementById('universe').addEventListener('click',e=>{
+  if(e.target.tagName!=='BUTTON')return;
+  document.querySelectorAll('#universe button').forEach(b=>b.classList.remove('active'));
+  e.target.classList.add('active'); activeUniverse=e.target.dataset.u; renderKPIs();
+});
+document.getElementById('tabs').addEventListener('click',e=>{
+  if(e.target.tagName!=='BUTTON')return;
+  document.querySelectorAll('#tabs button').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  e.target.classList.add('active'); activePage=e.target.dataset.p;
+  document.getElementById(activePage).classList.add('active'); ensurePage(activePage);
+});
+
+/* ===================== INIT ===================== */
+applyText(); renderKPIs(); renderTable(); ensurePage('p22');
+</script>
+</body>
+</html>
