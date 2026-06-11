@@ -68,6 +68,13 @@
   table.pnl td.cost{color:#7d6b55}
   footer{margin-top:26px;border-top:1px solid var(--line);padding-top:14px;color:var(--muted);font-size:11px;line-height:1.6}
   footer b{color:var(--ink)}
+  .methnote{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin-top:14px}
+  .methnote .mh{color:var(--teal);font-weight:700;font-size:12.5px;margin-bottom:6px}
+  .methnote .mb{font-size:12px;line-height:1.6;color:var(--ink);text-align:justify}
+  .methnote .mf{background:var(--bg2);border-radius:6px;padding:8px 10px;font-weight:600;margin:6px 0}
+  .infobtn{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;border:1px solid var(--accent);color:var(--teal);font-size:11px;font-weight:700;cursor:pointer;margin-inline-start:6px;background:var(--card);font-family:var(--font);line-height:1;flex:none;font-style:italic}
+  .infobtn:hover{background:var(--accent);color:#fff}
+  .infobox{background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:10px 12px;margin:8px 0;font-size:11.5px;line-height:1.6;color:var(--ink);text-align:justify;display:none}
   /* RTL */
   html[dir=rtl] body{direction:rtl}
   html[dir=rtl] .topright{align-items:flex-start}
@@ -94,6 +101,7 @@
 
   <nav class="tabs" id="tabs">
     <button data-p="p22" class="active" data-i18n="tab22">Market Dynamics</button>
+    <button data-p="p99" data-i18n="tab99">The Governance Gap</button>
     <button data-p="p63" data-i18n="tab63">Financial Feasibility</button>
   </nav>
 
@@ -112,10 +120,35 @@
     <div class="kpis" id="kpis22"></div>
     <div class="grid">
       <div class="panel full"><h3 data-i18n="c_trend_t"></h3><div class="beat" data-i18n="c_trend_b"></div><div class="cwrap tall"><canvas id="trendChart"></canvas></div></div>
-      <div class="panel"><h3 data-i18n="c_pipe_t"></h3><div class="beat" data-i18n="c_pipe_b"></div><div class="cwrap"><canvas id="pipelineChart"></canvas></div></div>
+      <div class="panel"><div style="display:flex;align-items:center;flex-wrap:wrap"><h3 data-i18n="c_pipe_t"></h3><button class="infobtn" onclick="toggleInfo('info_pipe22')">i</button></div><div class="infobox" id="info_pipe22" data-i18n="info_pipe22"></div><div class="beat" data-i18n="c_pipe_b"></div><div class="cwrap"><canvas id="pipelineChart"></canvas></div></div>
       <div class="panel"><h3 data-i18n="c_ent_t"></h3><div class="beat" data-i18n="c_ent_b"></div><div class="cwrap"><canvas id="entityChart"></canvas></div></div>
       <div class="panel"><h3 data-i18n="c_conc_t"></h3><div class="beat" data-i18n="c_conc_b"></div><div class="cwrap"><canvas id="concChart"></canvas></div></div>
-      <div class="panel"><h3 data-i18n="c_leak_t"></h3><div class="beat" data-i18n="c_leak_b"></div><div class="cwrap"><canvas id="leakChart"></canvas></div></div>
+      <div class="panel"><div style="display:flex;align-items:center;flex-wrap:wrap"><h3 data-i18n="c_leak_t"></h3><button class="infobtn" onclick="toggleInfo('info_leak22')">i</button></div><div class="infobox" id="info_leak22" data-i18n="info_leak22"></div><div class="beat" data-i18n="c_leak_b"></div><div class="cwrap"><canvas id="leakChart"></canvas></div></div>
+    </div>
+  </section>
+
+  <!-- ===== Governance Gap ===== -->
+  <section class="page" id="p99">
+    <div class="storybeat" data-i18n="beat99"></div>
+    <div class="insights">
+      <div class="insight"><span data-i18n="ins99a"></span> <a href="https://mof.gov.sa/" target="_blank" rel="noopener" data-i18n="src">Source ↗</a></div>
+      <div class="insight"><span data-i18n="ins99b"></span> <a href="https://expro.gov.sa/" target="_blank" rel="noopener" data-i18n="src">Source ↗</a></div>
+    </div>
+    <div class="kpis" id="kpis99"></div>
+    <div class="panel full" style="border-left:4px solid var(--accent2);margin-bottom:18px">
+      <h3 data-i18n="c_expro_t"></h3>
+      <div class="beat" data-i18n="c_expro_b"></div>
+      <div style="display:flex;flex-wrap:wrap;align-items:center;gap:22px">
+        <div style="font-size:46px;font-weight:700;white-space:nowrap;line-height:1.1">
+          <span style="color:var(--neg)">46%</span><span style="color:var(--muted);font-size:30px"> → </span><span style="color:var(--pos)">&lt; 1%</span>
+        </div>
+        <div style="flex:1;min-width:240px;font-size:12.5px;color:var(--muted);line-height:1.6" data-i18n="expro_note"></div>
+      </div>
+    </div>
+    <div class="grid">
+      <div class="panel"><h3 data-i18n="c_leak99_t"></h3><div class="beat" data-i18n="c_leak99_b"></div><div class="cwrap"><canvas id="leak99Chart"></canvas></div></div>
+      <div class="panel"><div style="display:flex;align-items:center;flex-wrap:wrap"><h3 data-i18n="t_leak99_t"></h3><button class="infobtn" onclick="toggleInfo('info_leak99')">i</button></div><div class="infobox" id="info_leak99" data-i18n="info_leak99"></div><div class="beat" data-i18n="t_leak99_b"></div><div id="leak99Table"></div></div>
+      <div class="panel full"><h3 data-i18n="t_rej_t"></h3><div class="beat" data-i18n="t_rej_b"></div><div id="rejTable"></div></div>
     </div>
   </section>
 
@@ -124,7 +157,7 @@
     <div class="storybeat" data-i18n="beat63"></div>
     <div class="kpis" id="kpis63"></div>
     <div class="grid">
-      <div class="panel full"><h3 data-i18n="c_pnl_t"></h3><div class="beat" data-i18n="c_pnl_b"></div><div class="cwrap tall"><canvas id="pnlChart"></canvas></div></div>
+      <div class="panel full"><div style="display:flex;align-items:center;flex-wrap:wrap"><h3 data-i18n="c_pnl_t"></h3><button class="infobtn" onclick="toggleInfo('info_pnl63')">i</button></div><div class="infobox" id="info_pnl63" data-i18n="info_pnl63"></div><div class="beat" data-i18n="c_pnl_b"></div><div class="cwrap tall"><canvas id="pnlChart"></canvas></div></div>
       <div class="panel full"><h3 data-i18n="t_pnl_t"></h3><div class="beat" data-i18n="t_pnl_b"></div><div id="pnlTable"></div></div>
       <div class="panel"><h3 data-i18n="c_opex_t"></h3><div class="beat" data-i18n="c_opex_b"></div><div class="cwrap"><canvas id="opexChart"></canvas></div></div>
       <div class="panel"><h3 data-i18n="c_prof_t"></h3><div class="beat" data-i18n="c_prof_b"></div><div class="cwrap"><canvas id="profChart"></canvas></div></div>
@@ -143,8 +176,8 @@ const L={
   title:"Masarat Al-Tanfeeth — Executive Dashboard",
   cycle:"The Pre-Award Planning to Post-Award Payment Cycle",
   tagline:"Two-Phase Multi-Sided GovTech & FinTech Marketplace · Vision 2030 · v10.0",
-  lang:"العربية", tab22:"Market Dynamics", tab63:"Financial Feasibility",
-  beat22:"<b>Bottom line for the boardroom —</b> this is not a SAR 429B construction play. It is a SAR 1.65T multi-sided market whose value is concentrated in a handful of large tenders, locked in by local-content regulation, and trapped behind a 65-day payment lag. Masarat is built to release exactly that trapped value.",
+  lang:"العربية", tab22:"Market Dynamics", tab63:"Financial Feasibility", tab99:"The Governance Gap",
+  beat22:"This is not a SAR 429B construction play. It is a SAR 1.65T multi-sided market whose value is concentrated in a handful of large tenders, locked in by local-content regulation, and trapped behind a 65-day payment lag. Masarat is built to release exactly that trapped value.",
   beat63:"<b>For the CFO —</b> the dynamic Approval Matrix freezes every change order until the technical study clears it, and the Movement Reversal engine writes down any returned or rejected value the instant it happens. Together they eliminate over-factoring risk and convert a 65-day payment lag into financeable, low-risk working capital — at a Year-3 EBITDA margin of +28.3% on a deliberately lean SAR 14.2M cost base.",
   ins1:"Etimad has processed over <b>SAR 2 Trillion</b> in government contracts since launch — the national rail Masarat governs.",
   ins2:"GASTAT anchors the construction sector at <b>SAR 429.3B</b> — SMEs SAR 248.9B, large enterprises SAR 180.4B — the empirical basis for our bimodal design.",
@@ -166,6 +199,30 @@ const L={
   c_mvp_t:"Ultra-Lean MVP Inception — SAR 450K", c_mvp_b:"66.7% of capital builds permanent backend IP before scale capital is deployed.",
   foot1:"<b>Sources & caveats:</b> GASTAT Comprehensive Economic Survey 2023 (SAR 429.3B; SME 248.9B / Large 180.4B); Etimad > SAR 2T processed contracts; LCGPA 2024 (SAR 336.3B tenders, 94.1% local-content intensity). SAR 460B+ category splits are calibrated analyst allocations.",
   foot2:"<b>EBITDA bridge:</b> Year-3 EBITDA +28.3% (SAR 19.8M) = Revenue 70.0M − Cost of Revenue 36.0M − OpEx 14.2M. Cost of Revenue covers financier factoring payouts, cloud/Claude-API consumption and onboarding. Unit economics are analyst-derived for illustration.",
+  // Governance Gap (§p99)
+  beat99:"<b>The fact that justifies the build —</b> Etimad processes over SAR 2 Trillion, yet no official body publishes a national figure for rejected bids, contract fines, or currently-stalled projects. This is not a research gap — it is an institutional governance gap: the system disburses but does not measure execution. Masarat is the missing measurement layer.",
+  ins99a:"The Government Tenders &amp; Procurement Law (Art. 72) caps delay penalties at 6% of supply contracts and 20% of works contracts — yet no national total of imposed fines is published.",
+  ins99b:"Expro (Spending Efficiency Authority) cut project stumbling in Madinah from 46% (2020) to under 1% (2024) — proof that digital governance moves the needle.",
+  c_expro_t:"Proof of Impact — The Expro Madinah Model",
+  c_expro_b:"Madinah region, 2020 → 2024 — project stumbling collapsed from 46% to under 1% once spending-governance discipline was applied.",
+  expro_note:"The stumbling rate fell across the Madinah region between 2020 and 2024 through spending-governance practices applied by Expro. Masarat generalises this proven model from a single region to the entire national execution system.",
+  c_leak99_t:"Value-Leakage Anchored to Statute",
+  c_leak99_b:"Each leakage pool mapped to the article of law that governs it.",
+  t_leak99_t:"Leakage Pools × Legal Anchor",
+  t_leak99_b:"Percentages are calibrated analyst estimates; each legal anchor is documented in statute.",
+  t_rej_t:"Statutory Bid-Rejection Taxonomy — The Product",
+  t_rej_b:"Seven codified disqualification grounds become the platform's ready-made rejection taxonomy.",
+  trapNote22:"<div class='mh'>📊 Deriving the Trapped Working-Capital Figure (SAR 29.4B):<button class='infobtn' onclick=\"toggleInfo('info_trap22')\">i</button></div><div class='mb'>This anchor figure is derived from a financial model linking the sector's annual operating expense to the average liquidity-lag period. Applied formula: <div class='mf'>Trapped Capital = (Annual Sector OpEx ÷ 365) × Average Payment Lag</div> Using an estimated operating-expense base of SAR 165.2B (calibrated against GASTAT data — not a figure published directly by GASTAT) and a 65-day average field-to-cash lag: (165.2 ÷ 365) × 65 ≈ SAR 29.4B in trapped working capital. This base is the quantitative reference underlying the value-leakage analysis in the Governance Gap tab.</div>",
+  trapNote99:"<div class='mh'>📊 From Macro Base to Distribution — Method &amp; Statutory Anchoring:</div><div class='mb'>The amounts start from the SAR 29.4B trapped-capital base, derived via <div class='mf'>(165.2B ÷ 365) × 65 days</div> (OpEx base calibrated against GASTAT; 65-day lag). This total is distributed by the calibrated estimated leakage shares into: SAR 11.17B change orders (Art. 69 — amendments), SAR 9.11B payment-delay carrying cost (Art. 72 — delay penalties), SAR 5.29B manual reconciliations (Art. 73 — continuous-execution contracts), SAR 2.65B local-content penalties (LCGPA Mandatory List), and SAR 1.18B other administrative items. The percentages are estimates and the base is derived from platform data; no official figure for leakage distribution is published — precisely the governance gap Masarat addresses through its Movement &amp; Reversal Engine.</div>",
+  info_leak22:"Methodology: The 38/31/18/9/4 distribution is constructed using the Tawazun/PwC 5-step Spend-Analysis method (Spend Pareto). The rank order follows documented pain severity from this research: change orders represent 15–30% of contract value in Saudi mega-projects (Problem Statement); payment-delay carrying cost rests on the documented 60–70-day field-to-cash lag against the sector's SAR 165.2B annual OpEx; reconciliation reflects the 15–30 working-day manual claim cycle and the surveyed #1 bottleneck (quantity matching); LCGPA penalties reflect score-shock exposure including up to 10% price-preference disqualification. Exact percentages are calibrated analyst estimates — no official leakage distribution is published.",
+  info_pipe22:"Methodology: The SAR 460B serviceable pipeline is conservatively scoped from official macro anchors — Etimad annual procurement exceeding SAR 500B (trade.gov) and SAR 336.3B in 2024 tenders (LCGPA). The six-category split (Construction 185 / O&amp;M 80 / Medical 70 / Goods 55 / IT 45 / Professional 25) is a calibrated analyst allocation aligning Etimad activity categories with FY2026 budget allocations (e.g., SAR 260B healthcare, ~SAR 201B education, MoF). Category boundaries are estimates; the total envelope is anchored to official figures.",
+  info_trap22:"Methodology: Trapped Capital = (Annual Sector OpEx ÷ 365) × Average Payment Lag = (165.2B ÷ 365) × 65 ≈ SAR 29.4B. The 165.2B OpEx base is an estimated figure calibrated against GASTAT's 2023 survey (which reports SAR 429.3B sector operating revenue — OpEx is derived, not published). The 65-day lag sits inside the documented 60–70-day range. This formula is declared as an explicit assumption in the capstone report (§6.2: 'Opex × 65/365-day outstanding (assumption)') — the dashboard and the report are fully consistent.",
+  info_leak99:"Methodology: SAR amounts = pool share × the SAR 29.4B trapped-capital base (e.g., 38% × 29.4 = 11.17B). Shares follow the Tawazun Spend-Pareto construction (see Market Dynamics ⓘ); the base derivation is (165.2B ÷ 365) × 65 days. Legal anchors are statutory and verified: Art. 69 (amendments), Art. 72 (delay penalties), Art. 73 (continuous-execution contracts), LCGPA Mandatory List. No official national figure exists for either rejected bids, imposed fines, or leakage distribution — this absence is the governance gap itself.",
+  info_pnl63:"Methodology: All P&amp;L figures (revenue 6.8→24.0→70.0M, OpEx 1.40→4.60→14.20M, Year-3 EBITDA +28.3%) are analyst-derived unit economics built bottom-up for illustration: tiered SaaS subscriptions plus a 0.5–1.5% FinTech origination commission applied to a Year-3 SOM of ≈SAR 880M (3% of the 29.4B locked pool), midpoint 1% ≈ SAR 8.8M origination revenue — consistent with the capstone's FinTech market-sizing model (§6.2). These are forward-looking estimates, not audited figures.",
+  leak99:["Change orders","Payment delay","Reconciliation","Local-content penalties","Other"],
+  kpi99:[["Rejected Bids — National","Unpublished","Etimad runs bid-opening, but no public dashboard of rejection causes exists"],["Contract Fines — National","Unpublished","Legal basis is clear (Art. 72) — no aggregated collected total is released"],["Stalled Projects — National","No recent figure","Latest national numbers are estimates, dated 2013–2016"],["Measurable Rejection Causes","7 codified","Statutory disqualification grounds → ready-made platform taxonomy",1]],
+  leak99Tbl:{head:["Pool","Share","Legal Anchor"],rows:[["Change orders","38%","Art. 69 — Contract amendments"],["Payment delay","31%","Art. 72 — Delay penalties / payment gap"],["Reconciliation","18%","Art. 73 — Continuous-execution contracts"],["Local-content penalties","9%","LCGPA Mandatory List"],["Other","4%","—"]]},
+  rejTbl:{head:["Cause","Statutory Reference"],rows:[["Offer non-compliant with tender documents","Art. 46 (Law)"],["Reservation/change to terms &amp; BoQ","Art. 20 (Regulation)"],["Omitted item pricing (supply contracts)","Art. 32/b (Regulation)"],["Arithmetic errors &gt; 10% or refusal to re-price","Art. 82 (Regulation)"],["Price 25%+ below estimate, no credible capacity","Evaluation Controls (MoF)"],["Non-compliance with LCGPA Mandatory List","LCGPA"],["Submission after deadline","Art. 10 (Law)"]]},
   // KPI sets
   kpi22:{
    b2g:[["Serviceable Market (SAM)","SAR 460B","Sector-agnostic Etimad pipeline / yr"],["Beachhead (SOM)","SAR 185B","Construction landing pad — 40% of SAM"],["Trapped Working Capital","SAR 29.4B","17.8% of the SAR 165.2B opex base, locked 65 days"],["LCGPA Intensity","94.1%","SAR 316.4B of SAR 336.3B carry local-content rules"],["Public-Competition Share","74.1%","SAR 713.9M of SAR 963.1M (331-tender sample)"],["Construction Sector TAM","SAR 429.3B","GASTAT 2023 operating revenue"]],
@@ -189,8 +246,8 @@ const L={
   title:"منصة مسارات التنفيذ — لوحة القيادة التنفيذية",
   cycle:"دورة التخطيط ما قبل الترسية إلى الدفع ما بعد الترسية",
   tagline:"سوق رقمي حكومي ومالي متعدد الأطراف على مرحلتين · رؤية 2030 · الإصدار 10.0",
-  lang:"English", tab22:"ديناميكيات السوق", tab63:"الجدوى المالية",
-  beat22:"<b>الخلاصة لمجلس الإدارة —</b> هذه ليست فرصة إنشاءات بقيمة 429 مليار ريال، بل سوقٌ متعدد الأطراف بقيمة 1.65 تريليون ريال، قيمته مركّزة في عددٍ محدود من المنافسات الكبرى، ومحميّة باشتراطات المحتوى المحلي، ومحتجزة خلف فجوة سدادٍ تمتد 65 يوماً. صُمّمت مسارات لتحرير هذه القيمة المحتجزة بالتحديد.",
+  lang:"English", tab22:"ديناميكيات السوق", tab63:"الجدوى المالية", tab99:"فجوة الحوكمة",
+  beat22:"هذه ليست فرصة إنشاءات بقيمة 429 مليار ريال، بل سوقٌ متعدد الأطراف بقيمة 1.65 تريليون ريال، قيمته مركّزة في عددٍ محدود من المنافسات الكبرى، ومحميّة باشتراطات المحتوى المحلي، ومحتجزة خلف فجوة سدادٍ تمتد 65 يوماً. صُمّمت مسارات لتحرير هذه القيمة المحتجزة بالتحديد.",
   beat63:"<b>إلى المدير المالي —</b> مصفوفة الاعتماد الديناميكية تُجمّد أي أمر تغييرٍ حتى تُجيزه الدراسة الفنية، ومحرّك عكس الحركة يُخفّض أي قيمةٍ مرتجعة أو مرفوضة لحظة حدوثها. ومعاً يُلغيان مخاطر التمويل الزائد ويحوّلان فجوة سدادٍ من 65 يوماً إلى رأس مالٍ عامل منخفض المخاطر وقابل للتمويل — بهامش EBITDA يبلغ +28.3% في السنة الثالثة على قاعدة تكلفةٍ رشيقة قدرها 14.2 مليون ريال.",
   ins1:"عالجت منصة اعتماد أكثر من <b>2 تريليون ريال</b> من العقود الحكومية منذ إطلاقها — وهي القناة الوطنية التي تحوكمها مسارات.",
   ins2:"تُثبّت هيئة الإحصاء حجم قطاع الإنشاءات عند <b>429.3 مليار ريال</b> — المنشآت الصغيرة والمتوسطة 248.9 مليار والكبرى 180.4 مليار — وهو الأساس التجريبي لتصميمنا الثنائي.",
@@ -212,6 +269,30 @@ const L={
   c_mvp_t:"تأسيس MVP فائق الرشاقة — 450 ألف ريال", c_mvp_b:"66.7% من رأس المال تبني ملكية فكرية خلفية دائمة قبل ضخّ رأس مال التوسّع.",
   foot1:"<b>المصادر والتحفظات:</b> مسح هيئة الإحصاء الاقتصادي الشامل 2023 (429.3 مليار؛ صغيرة 248.9 / كبيرة 180.4)؛ اعتماد > 2 تريليون عقد معالَج؛ هيئة المحتوى المحلي 2024 (336.3 مليار منافسة، كثافة محتوى محلي 94.1%). تقسيمات الـ 460 مليار تقديرات تحليلية معايَرة.",
   foot2:"<b>جسر EBITDA:</b> السنة الثالثة +28.3% (19.8 مليون) = إيراد 70.0 − تكلفة إيراد 36.0 − مصروفات 14.2 مليون. تكلفة الإيراد تشمل مدفوعات التخصيم للممولين واستهلاك السحابة/واجهة Claude والتهيئة. وحدات الاقتصاد تقديرية للتوضيح.",
+  // فجوة الحوكمة (§p99)
+  beat99:"<b>الحقيقة التي تبرّر المشروع —</b> تعالج منظومة اعتماد أكثر من 2 تريليون ريال، ومع ذلك لا تنشر أي جهة رسمية رقماً وطنياً مجمّعاً للعروض المرفوضة، ولا للغرامات المفروضة على العقود، ولا للمشاريع المتعثرة حالياً. هذه ليست ثغرة بحثية، بل فجوة حوكمة مؤسسية: المنظومة تصرف ولا تقيس أثر التنفيذ. مسارات صُمّمت لتكون طبقة القياس المفقودة.",
+  ins99a:"يحدّد نظام المنافسات والمشتريات الحكومية (م.72) سقف غرامة التأخير بـ6% لعقود التوريد و20% لعقود الأعمال — ومع ذلك لا يُنشر إجمالي وطني للغرامات المفروضة.",
+  ins99b:"خفّضت هيئة كفاءة الإنفاق والمشروعات الحكومية (إكسبرو) تعثّر المشاريع في المدينة المنورة من 46% (2020) إلى أقل من 1% (2024) — دليلٌ على أثر الحوكمة الرقمية.",
+  c_expro_t:"دليل الأثر — نموذج إكسبرو بالمدينة المنورة",
+  c_expro_b:"منطقة المدينة المنورة، 2020 ← 2024 — انهار تعثّر المشاريع من 46% إلى أقل من 1% بعد تطبيق انضباط حوكمة الإنفاق.",
+  expro_note:"انخفض معدّل التعثّر في منطقة المدينة المنورة بين 2020 و2024 عبر ممارسات حوكمة الإنفاق التي طبّقتها إكسبرو. وتعمّم مسارات هذا النموذج المثبت من منطقة واحدة إلى منظومة التنفيذ الوطنية بأكملها.",
+  c_leak99_t:"تسرّب القيمة مرتبطاً بالنظام",
+  c_leak99_b:"كل مجمّع تسرّب مرتبط بمادة النظام التي تحكمه.",
+  t_leak99_t:"مجمّعات التسرّب × السند النظامي",
+  t_leak99_b:"النسب تقديرات تحليلية معايَرة؛ وكل سند نظامي موثّق في الأنظمة.",
+  t_rej_t:"تصنيف أسباب الرفض النظامي — المنتج",
+  t_rej_b:"سبعة أسباب استبعاد مقنّنة تتحوّل إلى تصنيف الرفض الجاهز للمنصة.",
+  trapNote22:"<div class='mh'>📊 اشتقاق رقم رأس المال العامل المحتجز (29.4 مليار ريال):<button class='infobtn' onclick=\"toggleInfo('info_trap22')\">i</button></div><div class='mb'>يُشتقّ هذا الرقم المحوري من نموذج مالي يربط النفقات التشغيلية السنوية للقطاع بمتوسط فترة تعليق السيولة. المعادلة المطبّقة: <div class='mf'>رأس المال المحتجز = (النفقات التشغيلية السنوية ÷ 365) × متوسط فترة تأخّر الصرف</div> وبتطبيق قاعدة مصروفات تشغيلية مقدّرة قدرها 165.2 مليار ريال (معايَرة على بيانات الهيئة العامة للإحصاء GASTAT، وليست رقماً منشوراً مباشرةً عنها)، ومتوسط تأخّر تحويل المستخلصات إلى نقد قدره 65 يوماً: (165.2 ÷ 365) × 65 ≈ 29.4 مليار ريال محتجزة كسيولة عالقة. هذه القاعدة هي المرجع الكمّي الذي يُبنى عليه تحليل تسرّب القيمة في تبويب فجوة الحوكمة.</div>",
+  trapNote99:"<div class='mh'>📊 من القاعدة الكلية إلى التوزيع — المنهجية والإسناد النظامي:</div><div class='mb'>تنطلق المبالغ من قاعدة رأس المال المحتجز 29.4 مليار ريال، المشتقّة عبر: <div class='mf'>(165.2 مليار ÷ 365) × 65 يوماً</div> (قاعدة المصروفات معايَرة على GASTAT، والفجوة 65 يوماً). ويُوزَّع هذا الإجمالي وفق نسب التسرّب التقديرية المعايَرة إلى: 11.17 مليار أوامر تغيير (م.69 — التعديلات)، 9.11 مليار أعباء تأخّر السداد (م.72 — غرامات التأخير)، 5.29 مليار تسويات يدوية (م.73 — العقود مستمرة التنفيذ)، 2.65 مليار غرامات محتوى محلي (القائمة الإلزامية LCGPA)، و1.18 مليار بنود إدارية أخرى. النسب تقديرية والقاعدة مشتقّة من بيانات المنصة؛ ولا يُنشر رقم رسمي لتوزيع التسرّب — وهذه فجوة الحوكمة ذاتها التي تعالجها مسارات عبر محرك الحركة والعكس.</div>",
+  info_leak22:"المنهجية: وُزِّعت النسب 38/31/18/9/4 وفق منهجية تحليل الإنفاق الخماسية (Tawazun/PwC — Spend Pareto). ترتيب النسب يتبع شدة الألم الموثّقة في هذا البحث: أوامر التغيير تمثل 15–30% من قيمة العقد في المشاريع الكبرى (بيان المشكلة)؛ وعبء تأخّر السداد يستند إلى فجوة 60–70 يوماً الموثّقة لتحويل المستخلص إلى نقد مقابل مصروفات تشغيلية قطاعية قدرها 165.2 مليار ريال سنوياً؛ والتسويات تعكس دورة المطالبة اليدوية 15–30 يوم عمل وعنق الزجاجة الأول في الاستبيان (مطابقة الكميات)؛ وغرامات المحتوى المحلي تعكس مخاطر صدمة النقاط وحرمان الأفضلية السعرية حتى 10%. النسب الدقيقة تقديرات تحليلية معايَرة — لا يُنشر توزيع رسمي للتسرّب.",
+  info_pipe22:"المنهجية: حُدّد خط المشتريات القابل للخدمة 460 مليار ريال بتحفّظ من مراسٍ كلية رسمية — مشتريات اعتماد السنوية المتجاوزة 500 مليار (trade.gov) ومنافسات 2024 البالغة 336.3 مليار (هيئة المحتوى المحلي). أما التقسيم السداسي (إنشاءات 185 / تشغيل وصيانة 80 / طبي 70 / سلع 55 / تقنية 45 / مهني 25) فهو توزيع تحليلي معايَر يوائم فئات نشاط اعتماد مع مخصصات ميزانية 2026 (مثل 260 مليار صحة و~201 مليار تعليم، وزارة المالية). حدود الفئات تقديرية؛ والمظروف الإجمالي مرتكز على أرقام رسمية.",
+  info_trap22:"المنهجية: رأس المال المحتجز = (المصروفات التشغيلية السنوية ÷ 365) × متوسط فترة التأخّر = (165.2 ÷ 365) × 65 ≈ 29.4 مليار ريال. قاعدة 165.2 مليار رقم مقدّر معايَر على مسح GASTAT لعام 2023 (الذي ينشر 429.3 مليار إيراداً تشغيلياً للقطاع — المصروفات مشتقّة وليست منشورة). وفترة 65 يوماً تقع ضمن النطاق الموثّق 60–70 يوماً. هذه المعادلة معلنة كافتراض صريح في تقرير الكابستون (§6.2) — فالداشبورد والتقرير متّسقان تماماً.",
+  info_leak99:"المنهجية: المبالغ = نسبة المجمّع × قاعدة رأس المال المحتجز 29.4 مليار ريال (مثال: 38% × 29.4 = 11.17 مليار). النسب مبنية وفق منهجية Tawazun Spend Pareto (انظر ⓘ في ديناميكيات السوق)؛ والقاعدة مشتقّة عبر (165.2 ÷ 365) × 65 يوماً. المراسي القانونية نظامية وموثّقة: م.69 (التعديلات)، م.72 (غرامات التأخير)، م.73 (العقود مستمرة التنفيذ)، والقائمة الإلزامية LCGPA. لا يوجد رقم وطني رسمي للعروض المرفوضة ولا للغرامات ولا لتوزيع التسرّب — وهذا الغياب هو فجوة الحوكمة ذاتها.",
+  info_pnl63:"المنهجية: جميع أرقام الأرباح والخسائر (إيراد 6.8←24.0←70.0 مليون، مصروفات 1.40←4.60←14.20 مليون، هامش EBITDA السنة الثالثة +28.3%) وحدات اقتصادية مشتقّة تحليلياً ومبنية من الأسفل للأعلى لأغراض التوضيح: اشتراكات SaaS متدرّجة + عمولة تأسيس تمويلية 0.5–1.5% مطبّقة على SOM السنة الثالثة ≈880 مليون ريال (3% من المجمّع المحتجز 29.4 مليار)، وبنقطة وسط 1% ≈ 8.8 مليون ريال إيراد تأسيس — بما يتّسق مع نموذج تحجيم سوق التمويل في الكابستون (§6.2). هذه تقديرات مستقبلية وليست أرقاماً مدقّقة.",
+  leak99:["أوامر التغيير","تأخّر السداد","التسويات","غرامات المحتوى المحلي","أخرى"],
+  kpi99:[["العروض المرفوضة — وطنياً","غير منشور","تدير اعتماد فتح العروض، لكن لا توجد لوحة عامة لأسباب الرفض"],["الغرامات على العقود — وطنياً","غير منشور","الأساس النظامي واضح (م.72) — دون إجمالي محصّل معلن"],["المشاريع المتعثرة — وطنياً","لا رقم حديث","أحدث الأرقام الوطنية تقديرات بين 2013–2016"],["أسباب الرفض القابلة للقياس","7 مقنّنة","أسباب استبعاد نظامية → تصنيف جاهز للمنصة",1]],
+  leak99Tbl:{head:["المجمّع","الحصة","السند النظامي"],rows:[["أوامر التغيير","38%","م.69 — تعديلات العقد"],["تأخّر السداد","31%","م.72 — غرامات التأخير / فجوة السداد"],["التسويات","18%","م.73 — عقود التنفيذ المستمر"],["غرامات المحتوى المحلي","9%","القائمة الإلزامية لهيئة المحتوى المحلي"],["أخرى","4%","—"]]},
+  rejTbl:{head:["السبب","السند النظامي"],rows:[["عرض غير مطابق لوثائق المنافسة","م.46 (النظام)"],["تحفّظ/تعديل على الشروط وجدول الكميات","م.20 (اللائحة)"],["إغفال تسعير بند (عقود التوريد)","م.32/ب (اللائحة)"],["أخطاء حسابية تتجاوز 10% أو رفض إعادة التسعير","م.82 (اللائحة)"],["سعر يقل 25%+ عن التقدير دون قدرة موثوقة","ضوابط التقييم (وزارة المالية)"],["عدم الامتثال للقائمة الإلزامية لهيئة المحتوى المحلي","هيئة المحتوى المحلي"],["تقديم العرض بعد الموعد النهائي","م.10 (النظام)"]]},
   kpi22:{
    b2g:[["السوق القابل للخدمة (SAM)","460 مليار ريال","خط مشتريات اعتماد متعدد القطاعات سنوياً"],["رأس الجسر (SOM)","185 مليار ريال","قطاع الإنشاءات كنقطة انطلاق — 40% من SAM"],["رأس المال العامل المحتجز","29.4 مليار ريال","17.8% من قاعدة المصروفات 165.2 مليار، محتجزة 65 يوماً"],["كثافة المحتوى المحلي","94.1%","316.4 مليار من 336.3 مليار تخضع لاشتراطات المحتوى المحلي"],["حصة المنافسة العامة","74.1%","713.9 مليون من 963.1 مليون (عينة 331 منافسة)"],["حجم قطاع الإنشاءات (TAM)","429.3 مليار ريال","إيراد التشغيل وفق هيئة الإحصاء 2023"]],
    b2b:[["حجم الفواتير القابل للاستهداف","1.2 تريليون ريال","اقتصاد التجارة الخاص تحت زاتكا (المرحلة 2/3)"],["نقطة الإدخال","طلب عرض أسعار مؤسسي","مماثل لكراسة اعتماد الحكومية"],["إعادة استخدام المعمارية","100%","النواة ذاتها، الثقة الصفرية، منطق العكس — مع إعادة توجيه"],["الدين التقني","≈ صفر","تتحوّل النقاط الطرفية إلى زاتكا عبر موصّلات ERP القياسية"],["مخاطر التمويل الزائد","مُلغاة","عكس الحركة يعيد التسعير على المرتجعات الفورية",1],["عمولة التأسيس","0.5–1.5%","عمولة مالية عالية الهامش على المستحقات"]],
@@ -240,15 +321,16 @@ const D={
  opexY3:[6.00,4.00,1.80,1.40,1.00],
  revStream:[[6.0,17.0,44.0],[0.8,7.0,26.0]], // SaaS, FinTech × year
  cogs:[6.4,18.9,36.0], mvp:[300,70,50,30],
- saas:[6.0,17.0,44.0], fin:[0.8,7.0,26.0]
+ saas:[6.0,17.0,44.0], fin:[0.8,7.0,26.0],
+ leak99:[38,31,18,9,4]
 };
 const PAL=['#00B4DB','#16C79A','#1f8fb0','#2aa39a','#3f7e8c','#7d909a'];
 const GRID='#E8EEF1';
 Chart.defaults.color='#5A6F78'; Chart.defaults.font.family="'Segoe UI',Tahoma,Arial,sans-serif"; Chart.defaults.font.size=12;
 
 let lang='en', activeUniverse='b2g', activePage='p22';
-const builtLang={p22:null,p63:null};
-const store={p22:[],p63:[]};
+const builtLang={p22:null,p63:null,p99:null};
+const store={p22:[],p63:[],p99:[]};
 
 /* ===================== RENDER TEXT ===================== */
 function applyText(){
@@ -260,11 +342,13 @@ function applyText(){
     const k=el.getAttribute('data-i18n'); if(t[k]!==undefined) el.innerHTML=t[k];
   });
 }
+function toggleInfo(id){const el=document.getElementById(id);if(el)el.style.display=el.style.display==='block'?'none':'block';}
 function kpiHTML(arr){return arr.map(k=>`<div class="kpi"><div class="lbl">${k[0]}</div>
   <div class="val ${k[3]?'pos':''}">${k[1]}</div><div class="sub">${k[2]}</div></div>`).join('');}
 function renderKPIs(){
   document.getElementById('kpis22').innerHTML=kpiHTML(L[lang].kpi22[activeUniverse]);
   document.getElementById('kpis63').innerHTML=kpiHTML(L[lang].kpi63);
+  document.getElementById('kpis99').innerHTML=kpiHTML(L[lang].kpi99);
 }
 function renderTable(){
   const t=L[lang].tbl, y=L[lang].years;
@@ -359,7 +443,24 @@ function buildP63(){
       plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` SAR ${c.parsed.y}K (${(c.parsed.y/450*100).toFixed(1)}%)`}}},
       scales:{y:{grid:{color:GRID},ticks:{callback:v=>v+'K'}},x:{grid:{display:false}}}}}));
 }
-const buildFns={p22:buildP22,p63:buildP63};
+function buildP99(){
+  destroy('p99'); const t=L[lang];
+  store.p99.push(new Chart(leak99Chart,{type:'doughnut',
+    data:{labels:t.leak99,datasets:[{data:D.leak99,backgroundColor:['#00B4DB','#16C79A','#1f8fb0','#3f7e8c','#aebcc4'],borderColor:'#fff',borderWidth:3}]},
+    options:{responsive:true,maintainAspectRatio:false,cutout:'58%',
+      plugins:{legend:{position:'bottom',labels:{padding:7,boxWidth:11,font:{size:10}}},tooltip:{callbacks:{label:c=>` ${c.parsed}%`}}}}}));
+  const lk=t.leak99Tbl;
+  let lh=`<table class="pnl"><thead><tr><th>${lk.head[0]}</th><th>${lk.head[1]}</th><th>${lk.head[2]}</th></tr></thead><tbody>`;
+  lk.rows.forEach(r=>{lh+=`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td></tr>`;});
+  lh+=`</tbody></table>`;
+  document.getElementById('leak99Table').innerHTML=lh;
+  const rj=t.rejTbl;
+  let rh=`<table class="pnl"><thead><tr><th>${rj.head[0]}</th><th>${rj.head[1]}</th></tr></thead><tbody>`;
+  rj.rows.forEach(r=>{rh+=`<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`;});
+  rh+=`</tbody></table>`;
+  document.getElementById('rejTable').innerHTML=rh;
+}
+const buildFns={p22:buildP22,p63:buildP63,p99:buildP99};
 function ensurePage(p){
   if(builtLang[p]!==lang){buildFns[p](); builtLang[p]=lang;}
   else setTimeout(()=>store[p].forEach(c=>c.resize()),40);
@@ -369,7 +470,7 @@ function ensurePage(p){
 document.getElementById('langBtn').addEventListener('click',()=>{
   lang = lang==='en'?'ar':'en';
   applyText(); renderKPIs(); renderTable();
-  builtLang.p22=null; builtLang.p63=null;
+  builtLang.p22=null; builtLang.p63=null; builtLang.p99=null;
   ensurePage(activePage);
 });
 document.getElementById('universe').addEventListener('click',e=>{
