@@ -103,6 +103,7 @@
     <button data-p="p22" class="active" data-i18n="tab22">Market Dynamics</button>
     <button data-p="p99" data-i18n="tab99">The Governance Gap</button>
     <button data-p="p63" data-i18n="tab63">Financial Feasibility</button>
+    <button data-p="p77" data-i18n="tab77">Survey Findings</button>
   </nav>
 
   <!-- ===== §2.2 ===== -->
@@ -166,6 +167,18 @@
     </div>
   </section>
 
+  <!-- ===== Survey Findings ===== -->
+  <section class="page" id="p77">
+    <div class="storybeat" data-i18n="beat77"></div>
+    <div class="kpis" id="kpis77"></div>
+    <div class="grid">
+      <div class="panel"><h3 data-i18n="c_cat77_t"></h3><div class="beat" data-i18n="c_cat77_b"></div><div class="cwrap"><canvas id="cat77Chart"></canvas></div></div>
+      <div class="panel"><h3 data-i18n="c_bottle77_t"></h3><div class="beat" data-i18n="c_bottle77_b"></div><div class="cwrap"><canvas id="bottle77Chart"></canvas></div></div>
+      <div class="panel full"><h3 data-i18n="c_agree77_t"></h3><div class="beat" data-i18n="c_agree77_b"></div><div class="cwrap tall"><canvas id="agree77Chart"></canvas></div></div>
+      <div class="panel"><h3 data-i18n="c_lag77_t"></h3><div class="beat" data-i18n="c_lag77_b"></div><div class="cwrap"><canvas id="lag77Chart"></canvas></div></div>
+    </div>
+  </section>
+
   <footer><div data-i18n="foot3"></div><div style="margin-top:6px" data-i18n="foot1"></div><div style="margin-top:6px" data-i18n="foot2"></div></footer>
 </div>
 
@@ -219,6 +232,17 @@ const L={
   info_trap22:"Methodology: Trapped Capital = (Annual Sector OpEx ÷ 365) × Average Payment Lag = (165.2B ÷ 365) × 65 ≈ SAR 29.4B. The 165.2B OpEx base is an estimated figure calibrated against GASTAT's 2023 survey (which reports SAR 429.3B sector operating revenue — OpEx is derived, not published). The 65-day lag sits inside the documented 60–70-day range. This formula is declared as an explicit assumption in the capstone report (§6.2: 'Opex × 65/365-day outstanding (assumption)') — the dashboard and the report are fully consistent.",
   info_leak99:"Methodology: SAR amounts = pool share × the SAR 29.4B trapped-capital base (e.g., 38% × 29.4 = 11.17B). Shares follow the Tawazun Spend-Pareto construction (see Market Dynamics ⓘ); the base derivation is (165.2B ÷ 365) × 65 days. Legal anchors are statutory and verified: Art. 69 (amendments), Art. 72 (delay penalties), Art. 73 (continuous-execution contracts), LCGPA Mandatory List. No official national figure exists for either rejected bids, imposed fines, or leakage distribution — this absence is the governance gap itself.",
   info_pnl63:"Methodology: All P&amp;L figures (revenue 6.8→24.0→70.0M, OpEx 1.40→4.60→14.20M, Year-3 EBITDA +28.3%) are analyst-derived unit economics built bottom-up for illustration: tiered SaaS subscriptions plus a 0.5–1.5% FinTech origination commission applied to a Year-3 SOM of ≈SAR 880M (3% of the 29.4B locked pool), midpoint 1% ≈ SAR 8.8M origination revenue — consistent with the capstone's FinTech market-sizing model (§6.2). These are forward-looking estimates, not audited figures.",
+  tab77:"Survey Findings",
+  beat77:"<b>Field validation —</b> a survey of government-contracting experts and executing parties confirms the governance gap from the ground up. All findings are shown as response percentages — 25% from the platform-owner side and 75% from executing parties.",
+  kpi77:[["Root cause of delay: no trusted digital system","78%","executing parties agree (top-two-box)"],["Extend Etimad scope to execution verification","67%","platform-owner side agree"],["#1 bottleneck: quantity matching","33%","top cause of claim-submission delay"],["Payment delay = measurable financial loss","67%","contractors agree",1]],
+  cat77:["Platform-owner side","Executing parties (contractors)"],
+  agree77:["Trusted system = root cause of delay","Extend scope to execution verification","Conditional gate on local-content breach","Automated claim-submission APIs","Delay = measurable financial loss","AI specs-to-cost pricing engine"],
+  bottle77:["Quantity matching","Internal approvals","Document coordination","Unapproved change orders","Collecting delivery evidence","Waiting on prior claims"],
+  lag77:["< 5 days","5–10 days","16–30 days","> 30 days"],
+  c_cat77_t:"Respondent Composition", c_cat77_b:"Platform-owner side vs executing parties (contractors).",
+  c_agree77_t:"Agreement with the Platform's Core Premises (% top-two-box)", c_agree77_b:"Share agreeing or strongly agreeing with each statement.",
+  c_bottle77_t:"Primary Claim-Submission Bottleneck", c_bottle77_b:"Quantity matching ranks #1 — the reconciliation leakage pool, confirmed in the field.",
+  c_lag77_t:"Delivery-to-Claim Submission Lag", c_lag77_b:"44% of executing parties take 16+ days from confirmed delivery to a successful claim.",
   leak99:["Change orders","Payment delay","Reconciliation","Local-content penalties","Other"],
   kpi99:[["Rejected Bids — National","Unpublished","Etimad runs bid-opening, but no public dashboard of rejection causes exists"],["Contract Fines — National","Unpublished","Legal basis is clear (Art. 72) — no aggregated collected total is released"],["Stalled Projects — National","No recent figure","Latest national numbers are estimates, dated 2013–2016"],["Measurable Rejection Causes","7 codified","Statutory disqualification grounds → ready-made platform taxonomy",1]],
   leak99Tbl:{head:["Pool","Share","Legal Anchor"],rows:[["Change orders","38%","Art. 69 — Contract amendments"],["Payment delay","31%","Art. 72 — Delay penalties / payment gap"],["Reconciliation","18%","Art. 73 — Continuous-execution contracts"],["Local-content penalties","9%","LCGPA Mandatory List"],["Other","4%","—"]]},
@@ -289,6 +313,17 @@ const L={
   info_trap22:"المنهجية: رأس المال المحتجز = (المصروفات التشغيلية السنوية ÷ 365) × متوسط فترة التأخّر = (165.2 ÷ 365) × 65 ≈ 29.4 مليار ريال. قاعدة 165.2 مليار رقم مقدّر معايَر على مسح GASTAT لعام 2023 (الذي ينشر 429.3 مليار إيراداً تشغيلياً للقطاع — المصروفات مشتقّة وليست منشورة). وفترة 65 يوماً تقع ضمن النطاق الموثّق 60–70 يوماً. هذه المعادلة معلنة كافتراض صريح في تقرير الكابستون (§6.2) — فالداشبورد والتقرير متّسقان تماماً.",
   info_leak99:"المنهجية: المبالغ = نسبة المجمّع × قاعدة رأس المال المحتجز 29.4 مليار ريال (مثال: 38% × 29.4 = 11.17 مليار). النسب مبنية وفق منهجية Tawazun Spend Pareto (انظر ⓘ في ديناميكيات السوق)؛ والقاعدة مشتقّة عبر (165.2 ÷ 365) × 65 يوماً. المراسي القانونية نظامية وموثّقة: م.69 (التعديلات)، م.72 (غرامات التأخير)، م.73 (العقود مستمرة التنفيذ)، والقائمة الإلزامية LCGPA. لا يوجد رقم وطني رسمي للعروض المرفوضة ولا للغرامات ولا لتوزيع التسرّب — وهذا الغياب هو فجوة الحوكمة ذاتها.",
   info_pnl63:"المنهجية: جميع أرقام الأرباح والخسائر (إيراد 6.8←24.0←70.0 مليون، مصروفات 1.40←4.60←14.20 مليون، هامش EBITDA السنة الثالثة +28.3%) وحدات اقتصادية مشتقّة تحليلياً ومبنية من الأسفل للأعلى لأغراض التوضيح: اشتراكات SaaS متدرّجة + عمولة تأسيس تمويلية 0.5–1.5% مطبّقة على SOM السنة الثالثة ≈880 مليون ريال (3% من المجمّع المحتجز 29.4 مليار)، وبنقطة وسط 1% ≈ 8.8 مليون ريال إيراد تأسيس — بما يتّسق مع نموذج تحجيم سوق التمويل في الكابستون (§6.2). هذه تقديرات مستقبلية وليست أرقاماً مدقّقة.",
+  tab77:"نتائج الاستبيان",
+  beat77:"<b>تحقّق ميداني —</b> استبيانٌ لخبراء التعاقد الحكومي والأطراف المنفّذة يؤكّد فجوة الحوكمة من الميدان. جميع النتائج معروضة كنِسَب للإجابات — 25% من جهة المالك و75% من الأطراف المنفّذة.",
+  kpi77:[["جذر التأخّر: غياب نظام رقمي موثّق","78%","اتفاق الأطراف المنفّذة (أعلى فئتين)"],["توسيع نطاق اعتماد للتحقق من التنفيذ","67%","اتفاق جهة المالك"],["أبرز عنق زجاجة: مطابقة الكميات","33%","السبب الأول لتأخّر المطالبات"],["تأخّر الصرف = خسارة مالية قابلة للقياس","67%","اتفاق المقاولين",1]],
+  cat77:["جهة المالك","الأطراف المنفّذة (مقاولون)"],
+  agree77:["نظام موثّق = جذر التأخّر","توسيع النطاق للتحقق من التنفيذ","بوابة شرطية للمحتوى المحلي","واجهات ربط آلية للمطالبات","التأخّر = خسارة قابلة للقياس","محرك تنبؤ سعري ذكي"],
+  bottle77:["مطابقة الكميات","الموافقات الداخلية","تنسيق المستندات","أوامر تغييرية غير معتمدة","جمع أدلة التسليم","انتظار مطالبات سابقة"],
+  lag77:["أقل من 5 أيام","5–10 أيام","16–30 يوماً","أكثر من 30 يوماً"],
+  c_cat77_t:"تركيبة المشاركين", c_cat77_b:"جهة المالك مقابل الأطراف المنفّذة (المقاولون).",
+  c_agree77_t:"الاتفاق مع فرضيات المنصة الجوهرية (نسبة أعلى فئتين)", c_agree77_b:"نسبة الموافقين أو الموافقين بشدة على كل عبارة.",
+  c_bottle77_t:"أبرز عنق زجاجة في تقديم المطالبات", c_bottle77_b:"مطابقة الكميات الأولى — مجمّع تسرّب التسويات، مؤكَّداً ميدانياً.",
+  c_lag77_t:"الفجوة بين التسليم وتقديم المطالبة", c_lag77_b:"44% من الأطراف المنفّذة يستغرقون 16 يوماً فأكثر من التسليم المؤكّد حتى نجاح المطالبة.",
   leak99:["أوامر التغيير","تأخّر السداد","التسويات","غرامات المحتوى المحلي","أخرى"],
   kpi99:[["العروض المرفوضة — وطنياً","غير منشور","تدير اعتماد فتح العروض، لكن لا توجد لوحة عامة لأسباب الرفض"],["الغرامات على العقود — وطنياً","غير منشور","الأساس النظامي واضح (م.72) — دون إجمالي محصّل معلن"],["المشاريع المتعثرة — وطنياً","لا رقم حديث","أحدث الأرقام الوطنية تقديرات بين 2013–2016"],["أسباب الرفض القابلة للقياس","7 مقنّنة","أسباب استبعاد نظامية → تصنيف جاهز للمنصة",1]],
   leak99Tbl:{head:["المجمّع","الحصة","السند النظامي"],rows:[["أوامر التغيير","38%","م.69 — تعديلات العقد"],["تأخّر السداد","31%","م.72 — غرامات التأخير / فجوة السداد"],["التسويات","18%","م.73 — عقود التنفيذ المستمر"],["غرامات المحتوى المحلي","9%","القائمة الإلزامية لهيئة المحتوى المحلي"],["أخرى","4%","—"]]},
@@ -322,15 +357,16 @@ const D={
  revStream:[[6.0,17.0,44.0],[0.8,7.0,26.0]], // SaaS, FinTech × year
  cogs:[6.4,18.9,36.0], mvp:[300,70,50,30],
  saas:[6.0,17.0,44.0], fin:[0.8,7.0,26.0],
- leak99:[38,31,18,9,4]
+ leak99:[38,31,18,9,4],
+ cat77:[25,75], agree77:[78,67,67,67,67,44], bottle77:[33,22,11,11,11,11], lag77:[33,22,33,11]
 };
 const PAL=['#00B4DB','#16C79A','#1f8fb0','#2aa39a','#3f7e8c','#7d909a'];
 const GRID='#E8EEF1';
 Chart.defaults.color='#5A6F78'; Chart.defaults.font.family="'Segoe UI',Tahoma,Arial,sans-serif"; Chart.defaults.font.size=12;
 
 let lang='en', activeUniverse='b2g', activePage='p22';
-const builtLang={p22:null,p63:null,p99:null};
-const store={p22:[],p63:[],p99:[]};
+const builtLang={p22:null,p63:null,p99:null,p77:null};
+const store={p22:[],p63:[],p99:[],p77:[]};
 
 /* ===================== RENDER TEXT ===================== */
 function applyText(){
@@ -349,6 +385,7 @@ function renderKPIs(){
   document.getElementById('kpis22').innerHTML=kpiHTML(L[lang].kpi22[activeUniverse]);
   document.getElementById('kpis63').innerHTML=kpiHTML(L[lang].kpi63);
   document.getElementById('kpis99').innerHTML=kpiHTML(L[lang].kpi99);
+  document.getElementById('kpis77').innerHTML=kpiHTML(L[lang].kpi77);
 }
 function renderTable(){
   const t=L[lang].tbl, y=L[lang].years;
@@ -460,7 +497,28 @@ function buildP99(){
   rh+=`</tbody></table>`;
   document.getElementById('rejTable').innerHTML=rh;
 }
-const buildFns={p22:buildP22,p63:buildP63,p99:buildP99};
+function buildP77(){
+  destroy('p77'); const t=L[lang];
+  store.p77.push(new Chart(cat77Chart,{type:'doughnut',
+    data:{labels:t.cat77,datasets:[{data:D.cat77,backgroundColor:['#16C79A','#00B4DB'],borderColor:'#fff',borderWidth:3}]},
+    options:{responsive:true,maintainAspectRatio:false,cutout:'62%',
+      plugins:{legend:{position:'bottom',labels:{padding:12,boxWidth:12}},tooltip:{callbacks:{label:c=>` ${c.parsed}%`}}}}}));
+  store.p77.push(new Chart(bottle77Chart,{type:'doughnut',
+    data:{labels:t.bottle77,datasets:[{data:D.bottle77,backgroundColor:['#00B4DB','#16C79A','#1f8fb0','#2aa39a','#3f7e8c','#aebcc4'],borderColor:'#fff',borderWidth:3}]},
+    options:{responsive:true,maintainAspectRatio:false,cutout:'58%',
+      plugins:{legend:{position:'bottom',labels:{padding:7,boxWidth:11,font:{size:10}}},tooltip:{callbacks:{label:c=>` ${c.parsed}%`}}}}}));
+  store.p77.push(new Chart(agree77Chart,{type:'bar',
+    data:{labels:t.agree77,datasets:[{data:D.agree77,backgroundColor:PAL,borderRadius:6}]},
+    options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.parsed.x}%`}}},
+      scales:{x:{grid:{color:GRID},max:100,ticks:{callback:v=>v+'%'}},y:{grid:{display:false}}}}}));
+  store.p77.push(new Chart(lag77Chart,{type:'bar',
+    data:{labels:t.lag77,datasets:[{data:D.lag77,backgroundColor:PAL,borderRadius:6}]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.parsed.y}%`}}},
+      scales:{y:{grid:{color:GRID},ticks:{callback:v=>v+'%'}},x:{grid:{display:false}}}}}));
+}
+const buildFns={p22:buildP22,p63:buildP63,p99:buildP99,p77:buildP77};
 function ensurePage(p){
   if(builtLang[p]!==lang){buildFns[p](); builtLang[p]=lang;}
   else setTimeout(()=>store[p].forEach(c=>c.resize()),40);
@@ -470,7 +528,7 @@ function ensurePage(p){
 document.getElementById('langBtn').addEventListener('click',()=>{
   lang = lang==='en'?'ar':'en';
   applyText(); renderKPIs(); renderTable();
-  builtLang.p22=null; builtLang.p63=null; builtLang.p99=null;
+  builtLang.p22=null; builtLang.p63=null; builtLang.p99=null; builtLang.p77=null;
   ensurePage(activePage);
 });
 document.getElementById('universe').addEventListener('click',e=>{
